@@ -7,12 +7,12 @@ import numpy as np
 
 
 def embed(image_path, output_path, message):
-    print(f"\n[DEBUG] Wywołano embed()")
+    print(f"\nWywołano embed()")
     print(f"  Wejście: {image_path}")
     print(f"  Wyjście: {output_path}")
     print(f"  Wiadomość: {message}")
 
-
+    #parse msg to bits
     bit_stream = []
     for char in message:
         bits_string = format(ord(char), '08b') 
@@ -40,11 +40,11 @@ def embed(image_path, output_path, message):
     print(f"Wiadomość została ukryta w pliku: {output_path}")
 
 def extract(stego_path, message_length):
-    print(f"\n[DEBUG] Wywołano extract()")
+    print(f"\nWywołano extract()")
     print(f"  Plik stego: {stego_path}")
     print(f"  Długość: {message_length} znaków")
     
-    # 
+    # Load image
     img = Image.open(stego_path).convert('RGB')
     flat_pixels = np.array(img).flatten()
     
@@ -65,10 +65,11 @@ def extract(stego_path, message_length):
         character = chr(int(byte_string, 2))
         message += character
         
-    print(f"\n[SUKCES] Odczytana wiadomość: {message}")
+    print(f"\nOdczytana wiadomość: {message}")
     return message
 
 def calculate_psnr(cover_path, stego_path):
+    print("\n--- PSNR ---")
     # LOAD PNG
     img1 = Image.open(cover_path).convert('RGB')
     img2 = Image.open(stego_path).convert('RGB')
@@ -76,23 +77,23 @@ def calculate_psnr(cover_path, stego_path):
     p1 = np.array(img1).astype(np.float64)
     p2 = np.array(img2).astype(np.float64)
     
-    #Calculate MSE
+    #Calculate Mean Squared Error
     mse = np.mean((p1 - p2) ** 2)
     if mse == 0:
         print("Obrazy są identyczne! PSNR = Nieskończoność (inf)")
         return float('inf')
         
-    #Calculate PSNR
+    #Calculate Peak Signal-to-Noise Ratio
     max_pixel = 255.0
     psnr = 20 * math.log10(max_pixel / math.sqrt(mse))
     
-    print(f"\n--- WYNIK PORÓWNANIA WIZUALNEGO ---")
+    print(f"\nWYNIK PSNR")
     print(f"Błąd średniokwadratowy (MSE): {mse:.6f}")
     print(f"Metryka PSNR: {psnr:.2f} dB")
     return psnr
 
 def test_jpeg(stego_png_path, original_message):
-    print("\n--- URUCHAMIANIE EKSPERYMENTU JPEG ---")
+    print("\n--- TEST JPEG ---")
     
     orig_bits = []
     for char in original_message:
@@ -132,7 +133,7 @@ def test_jpeg(stego_png_path, original_message):
             decoded_chars.append(chr(int(byte_str, 2)))
         decoded_msg = "".join(decoded_chars)
         
-        status = "TAK" if decoded_msg == original_message else "NIE (szum)"
+        status = "TAK" if decoded_msg == original_message else "NIE"
         print(f"{q:<12} | {accuracy:.2f}%{'' : <11} | {status}")
         
         if os.path.exists(temp_jpg):
@@ -140,9 +141,13 @@ def test_jpeg(stego_png_path, original_message):
 
 def main():
     # EMBED
-    # python stego.py embed cover.png stego.png "TajnyTekst"
+    # python stego.py embed cover.png stego.png "C++_is_better_than_Python"
     # EXTRACT
-    # python stego.py extract stego.png 10
+    # python stego.py extract stego.png 25
+    # PSNR
+    # stego.py psnr cover.png stego.png
+    # jpeg_test
+    # python stego.py jpeg_test stego.png "C++_is_better_than_Python"
     
     if len(sys.argv) < 2:
         print("Sposób użycia:")

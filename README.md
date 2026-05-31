@@ -79,7 +79,7 @@ $$MSE = \frac{1}{W \cdot H \cdot 3} \sum_{i,j,k} (I_{i,j,k} - K_{i,j,k})^2$$
 
 $$PSNR = 20 \cdot \log_{10} \left( \frac{255}{\sqrt{MSE}} \right)$$
 
-**Uzyskane wyniki empiryczne:**
+**Uzyskane wyniki:**
 * **MSE:** 0.000007
 * **PSNR:** **99.61 dB**
 
@@ -88,7 +88,7 @@ $$PSNR = 20 \cdot \log_{10} \left( \frac{255}{\sqrt{MSE}} \right)$$
 ---
 
 ### B. Wpływ kompresji stratnej JPEG (Odporność na ataki)
-W ramach testu odporności (robustness), plik `stego.png` został poddany konwersji do formatu JPEG z różnymi stopniami jakości (`quality`). Następnie spróbowano wyciągnąć z nich pierwotną informację.
+W ramach testu odporności, plik `stego.png` został poddany konwersji do formatu JPEG z różnymi stopniami jakości. Następnie spróbowano wyciągnąć z nich pierwotną informację.
 
 | Jakość JPEG | Poprawność odczytanych bitów (%) | Czy tekst jest czytelny? |
 | :---: | :---: | :---: |
@@ -108,7 +108,7 @@ W ramach testu odporności (robustness), plik `stego.png` został poddany konwer
 Na podstawie przeprowadzonych eksperymentów sformułowano następujące wnioski końcowe dotyczące praktycznego zastosowania steganografii LSB:
 
 * **Zależność od formatu pliku:** Metoda najmniej znaczącego bitu (LSB) działa bezbłędnie **wyłącznie w formatach z bezstratną kompresją (PNG)** lub zupełnie bez kompresji (BMP). Gwarantuje to, że każdy bajt obrazu zapisany przez algorytm osadzający zostanie odczytany w identycznej formie przez algorytm wyciągający.
-* **Doskonała niewidzialność (Imperceptibility):** Wpływ metody LSB na jakość wizualną nośnika jest niezauważalny dla ludzkiego oka. Potwierdza to wyznaczona empirycznie metryka **PSNR na poziomie 99.61 dB**, co znacznie przekracza standardowy próg doskonałej jakości (40 dB).
-* **Zerowa odporność na ataki (Robustness):** Steganografia LSB w swojej podstawowej formie jest całkowicie bezbronna wobec jakichkolwiek modyfikacji pliku. Kompresja stratna JPEG niszczy strukturę LSB, zamieniając ukrytą wiadomość w losowy szum (poprawność bitowa na poziomie ~45%). Podobny efekt destrukcyjny wywołałaby zmiana rozmiaru obrazu, filtracja czy korekcja jasności.
+* **Doskonała niewidzialność:** Wpływ metody LSB na jakość wizualną nośnika jest niezauważalny dla ludzkiego oka. Potwierdza to wyznaczona empirycznie metryka **PSNR na poziomie 99.61 dB**, co znacznie przekracza standardowy próg doskonałej jakości (40 dB).
+* **Zerowa odporność na ataki:** Steganografia LSB w swojej podstawowej formie jest całkowicie bezbronna wobec jakichkolwiek modyfikacji pliku. Kompresja stratna JPEG niszczy strukturę LSB, zamieniając ukrytą wiadomość w losowy szum (poprawność bitowa na poziomie ~45%). Podobny efekt destrukcyjny wywołałaby zmiana rozmiaru obrazu, filtracja czy korekcja jasności.
 
 
